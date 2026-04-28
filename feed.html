@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ermn. · Home</title>
+<link rel="icon" href="wicon.png">
+<style>
+:root {
+  --accent: #3b5998; --accent2: #8b9dc3;
+  --body-bg: linear-gradient(180deg,#dfe7f3 0%,#f5f6f7 100%);
+  --card-bg: #fff; --topbar-bg: #3b5998;
+  --text: #333; --border: #b0b7c3;
+  --card-header: linear-gradient(180deg,#e8edf7,#d8e0f0);
+  --input-bg: #fafafa;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:Tahoma,Verdana,sans-serif; background:var(--body-bg); color:var(--text); min-height:100vh; font-size:13px; }
+
+.topbar { background:var(--topbar-bg); height:44px; display:flex; align-items:center; padding:0 12px; gap:10px; position:sticky; top:0; z-index:50; box-shadow:0 2px 5px rgba(0,0,0,0.3); border-bottom:2px solid rgba(0,0,0,0.2); }
+.topbar-logo { font-size:22px; font-weight:bold; color:white; letter-spacing:-1px; font-style:italic; text-shadow:1px 1px 2px rgba(0,0,0,0.3); }
+.topbar-nav { display:flex; gap:4px; margin-left:10px; }
+.topbar-nav a { color:rgba(255,255,255,0.85); font-size:12px; text-decoration:none; padding:4px 8px; border-radius:2px; }
+.topbar-nav a:hover { background:rgba(255,255,255,0.15); color:white; }
+.topbar-right { margin-left:auto; display:flex; align-items:center; gap:6px; }
+.topbar-right button { background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3); padding:4px 10px; font-size:12px; cursor:pointer; font-family:inherit; }
+.topbar-right button:hover { background:rgba(255,255,255,0.35); }
+
+.container { display:flex; max-width:1050px; margin:16px auto; gap:12px; padding:0 10px; }
+.feed-col { flex:1; min-width:0; }
+
+/* SEARCH BAR */
+.search-bar {
+  background:var(--card-bg); border:1px solid var(--border);
+  padding:8px 10px; margin-bottom:10px;
+  display:flex; gap:6px; align-items:center; flex-wrap:wrap;
+}
+.search-bar input {
+  flex:1; min-width:120px; padding:5px 8px; border:1px solid var(--border);
+  font-family:inherit; font-size:13px; background:var(--input-bg);
+  color:var(--text);
+}
+.search-bar input:focus { outline:none; border-color:var(--accent); background:white; }
+.search-bar select {
+  padding:5px 6px; border:1px solid var(--border); font-family:inherit; font-size:12px;
+  background:var(--input-bg); color:var(--text); cursor:pointer;
+}
+.search-bar button {
+  background:linear-gradient(180deg,#5274b3,#3b5998); color:white;
+  border:1px solid #2a4070; padding:5px 12px; font-family:inherit;
+  font-size:12px; font-weight:bold; cursor:pointer;
+}
+.search-bar button:hover { background:linear-gradient(180deg,#6080bf,#4a6aaa); }
+.search-bar .clear-btn { background:none; border:none; color:#888; font-size:12px; cursor:pointer; padding:5px 4px; }
+.search-bar .clear-btn:hover { color:#333; }
+.search-results-label { font-size:11px; color:#888; font-style:italic; width:100%; margin-top:2px; }
+
+.compose-box { background:var(--card-bg); border:1px solid var(--border); padding:10px; margin-bottom:10px; }
+.compose-box h4 { font-size:12px; color:var(--accent); background:var(--card-header); margin:-10px -10px 8px; padding:5px 10px; border-bottom:1px solid var(--border); font-weight:bold; }
+.compose-box textarea { width:100%; height:64px; resize:none; border:1px solid var(--border); padding:6px; font-family:inherit; font-size:13px; background:var(--input-bg); color:var(--text); }
+.compose-box textarea:focus { outline:none; border-color:var(--accent); background:white; }
+#postBtn { background:linear-gradient(180deg,#5274b3,#3b5998); color:white; border:1px solid #2a4070; padding:5px 14px; margin-top:6px; font-family:inherit; font-size:13px; font-weight:bold; cursor:pointer; }
+#postBtn:hover { background:linear-gradient(180deg,#6080bf,#4a6aaa); }
+#postBtn:disabled { background:#aaa; cursor:default; }
+
+.post { background:var(--card-bg); border:1px solid var(--border); margin-bottom:8px; padding:10px; }
+.post-header { display:flex; align-items:flex-start; gap:8px; margin-bottom:6px; position:relative; }
+.post-avatar { width:38px; height:38px; object-fit:cover; border:2px solid var(--border); flex-shrink:0; }
+.post-avatar-link { flex-shrink:0; }
+.post-meta { flex:1; }
+.user-link { color:var(--accent); font-weight:bold; text-decoration:none; font-size:13px; }
+.user-link:hover { text-decoration:underline; }
+.post-time { font-size:11px; color:#888; margin-top:1px; }
+.you-tag { background:var(--accent); color:white; font-size:10px; padding:1px 5px; margin-left:4px; border-radius:2px; }
+.follow-btn { background:linear-gradient(180deg,#f0f4ff,#e0e8f8); color:var(--accent); border:1px solid var(--border); font-size:11px; padding:2px 8px; cursor:pointer; font-family:inherit; margin-left:4px; }
+.follow-btn:hover { background:linear-gradient(180deg,#e0e8f8,#d0d8f0); }
+.follow-btn.following { background:linear-gradient(180deg,#d0f0d0,#b8e8b8); color:#2a6e2a; border-color:#8ec88e; }
+.delete { color:#999; cursor:pointer; font-size:13px; position:absolute; right:0; top:0; padding:2px 4px; }
+.delete:hover { color:#c00; }
+.post-text { padding:4px 0 8px; line-height:1.5; word-break:break-word; }
+
+.post-actions { display:flex; gap:14px; align-items:center; border-top:1px solid #eee; padding-top:6px; font-size:12px; flex-wrap:wrap; }
+.like-wrap { cursor:default; color:#555; }
+.heart { cursor:pointer; color:#bbb; font-size:14px; transition:color 0.15s; }
+.heart:hover { color:#e74c3c; }
+.heart.liked { color:#e74c3c; }
+.comment-toggle { cursor:pointer; color:#555; }
+.comment-toggle:hover { color:var(--accent); }
+.report-btn { cursor:pointer; color:#aaa; font-size:11px; margin-left:auto; }
+.report-btn:hover { color:#e07b00; }
+
+/* ADMIN BAR */
+.admin-bar { background:#fff8e1; border-top:1px solid #ffe082; padding:4px 8px; margin-top:6px; display:flex; gap:10px; flex-wrap:wrap; }
+.admin-action { font-size:11px; cursor:pointer; color:#555; font-weight:bold; padding:2px 6px; border:1px solid #ddd; background:white; }
+.admin-action:hover { background:#fee; border-color:#e55; color:#c00; }
+.admin-badge { background:#c00; color:white; font-size:9px; padding:1px 4px; border-radius:2px; margin-left:4px; vertical-align:middle; letter-spacing:0.5px; }
+
+.comment-box { margin-top:8px; border-top:1px solid #eee; padding-top:6px; }
+.comment { font-size:12px; padding:4px 0; border-bottom:1px dotted #eee; color:#444; display:flex; gap:4px; align-items:baseline; flex-wrap:wrap; }
+.comment .user-link { font-size:12px; }
+.del-comment { color:#bbb; cursor:pointer; font-size:11px; margin-left:auto; }
+.del-comment:hover { color:#c00; }
+.comment-input { display:flex; gap:4px; margin-top:6px; }
+.comment-input input { flex:1; border:1px solid var(--border); padding:4px 6px; font-size:12px; font-family:inherit; background:var(--input-bg); color:var(--text); }
+.comment-input input:focus { outline:none; border-color:var(--accent); background:var(--card-bg); }
+.comment-input button { background:linear-gradient(180deg,#5274b3,#3b5998); color:white; border:1px solid #2a4070; padding:4px 10px; font-size:12px; cursor:pointer; font-family:inherit; }
+.comment-input button:hover { background:linear-gradient(180deg,#6080bf,#4a6aaa); }
+
+#loading { text-align:center; padding:20px; color:#888; font-style:italic; }
+
+/* PAGINATION */
+.page-controls { display:flex; align-items:center; justify-content:center; gap:10px; padding:12px 0; margin-top:4px; }
+.page-btn { background:linear-gradient(180deg,#5274b3,#3b5998); color:white; border:1px solid #2a4070; padding:5px 14px; font-family:inherit; font-size:12px; font-weight:bold; cursor:pointer; }
+.page-btn:hover:not([disabled]) { background:linear-gradient(180deg,#6080bf,#4a6aaa); }
+.page-btn[disabled] { background:#bbb; border-color:#aaa; cursor:default; opacity:0.6; }
+.page-info { font-size:12px; color:#666; font-style:italic; }
+
+.sidebar { width:215px; flex-shrink:0; }
+.sidebar-card { background:var(--card-bg); border:1px solid var(--border); margin-bottom:10px; overflow:hidden; }
+.sidebar-card .card-title { background:var(--card-header); border-bottom:1px solid var(--border); padding:5px 10px; font-size:12px; font-weight:bold; color:var(--accent); }
+.sidebar-card .card-body { padding:10px; }
+.sidebar-avatar { width:60px; height:60px; object-fit:cover; border:2px solid var(--border); display:block; margin-bottom:6px; }
+#rightName { font-weight:bold; font-size:13px; margin-bottom:2px; }
+#rightBio { font-size:11px; color:#666; font-style:italic; margin:4px 0; }
+#rightFollowers { font-size:11px; color:#555; margin-bottom:8px; }
+.sidebar-upload { font-size:11px; }
+.sidebar-upload input { width:100%; margin-bottom:4px; font-size:11px; }
+.sidebar-upload button { background:linear-gradient(180deg,#5274b3,#3b5998); color:white; border:1px solid #2a4070; padding:4px 8px; font-size:11px; cursor:pointer; font-family:inherit; width:100%; }
+.sidebar-upload button:hover { background:linear-gradient(180deg,#6080bf,#4a6aaa); }
+.sidebar-links a { display:block; color:var(--accent); font-size:12px; text-decoration:none; padding:2px 10px; }
+.sidebar-links a:hover { text-decoration:underline; }
+
+/* Admin quick link */
+.admin-panel-link { background:#fff8e1; border:1px solid #ffe082; padding:4px 10px; font-size:12px; }
+.admin-panel-link a { color:#b8860b; font-weight:bold; }
+  .material-icons { font-family: "Material Icons"; font-size: 1.2em; vertical-align: middle; line-height: 1; position: relative; top: -1px; margin-right: 2px; }
+  .topbar-nav .material-icons { font-size: 1.3em; margin-right: 3px; }
+  .sidebar-links  .material-icons { font-family: "Material Icons"; font-size: 1.2em; vertical-align: middle; line-height: 1; position: relative; top: -1px; margin-right: 2px; }
+  .topbar-nav .material-icons { font-size: 1.3em; margin-right: 3px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-logo">ermn.</span>
+  <nav class="topbar-nav">
+    <a href="feed.html" class="active"><span class="material-icons">home</span> Home</a>
+    <a href="algo_feed.html"><span class="material-icons">explore</span> Feed</a>
+    <a href="profile.html"><span class="material-icons">person</span> Profile</a>
+  </nav>
+  <div class="topbar-right">
+    <button onclick="location.href='settings.html'"><span class="material-icons" style="font-size:14px;">settings</span> Settings</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="feed-col">
+    <!-- SEARCH & SORT -->
+    <div class="search-bar">
+      <select id="searchMode" onchange="onModeChange()" style="flex-shrink:0;">
+        <option value="posts">Posts</option>
+        <option value="users">Users</option>
+      </select>
+      <input id="searchInput" placeholder="Search posts..." onkeydown="if(event.key==='Enter')doSearch()">
+      <select id="sortSelect" onchange="doSearch()">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="popular">Most liked</option>
+      </select>
+      <button onclick="doSearch()"><span class="material-icons" style="font-size:14px;">search</span> Search</button>
+      <button class="clear-btn" onclick="clearSearch()"><span class="material-icons" style="font-size:14px;">close</span> Clear</button>
+      <div class="search-results-label" id="searchLabel"></div>
+    </div>
+
+    <div class="compose-box">
+      <h4><span class="material-icons" style="font-size:14px;">edit</span> What's on your mind?</h4>
+      <textarea id="text" placeholder="Share something with everyone..."></textarea>
+      <div id="pollInputs" style="display:none;margin-top:8px;padding-top:8px;border-top:1px dashed #ddd;">
+        <input id="pollOpt1" placeholder="Option 1" style="width:100%;margin-bottom:4px;padding:4px;border:1px solid #ccc;font-size:12px;">
+        <input id="pollOpt2" placeholder="Option 2" style="width:100%;margin-bottom:4px;padding:4px;border:1px solid #ccc;font-size:12px;">
+        <input id="pollOpt3" placeholder="Option 3 (optional)" style="width:100%;margin-bottom:4px;padding:4px;border:1px solid #ccc;font-size:12px;">
+        <input id="pollOpt4" placeholder="Option 4 (optional)" style="width:100%;margin-bottom:4px;padding:4px;border:1px solid #ccc;font-size:12px;">
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <button onclick="togglePollInputs()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:13px;display:flex;align-items:center;"><span class="material-icons" style="font-size:16px;margin-right:4px;">poll</span> Add Poll</button>
+        <button id="postBtn" onclick="post()">Post</button>
+      </div>
+    </div>
+    <div id="loading">Loading posts...</div>
+    <div id="posts"></div>
+    <div id="pagination"></div>
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-card">
+      <div class="card-title"><span class="material-icons" style="font-size:13px;">person</span> My Profile</div>
+      <div class="card-body">
+        <img id="rightPic" class="sidebar-avatar" src="empty.jpg" onerror="this.src='empty.jpg'">
+        <div id="rightName"></div>
+        <div id="rightBio"></div>
+        <div id="rightFollowers"></div>
+        <a href="profile.html" style="font-size:12px;color:var(--accent);">Edit profile →</a>
+      </div>
+    </div>
+    <div class="sidebar-card" id="adminPanelCard" style="display:none;">
+      <div class="card-title"><span class="material-icons" style="font-size:13px;">security</span> Admin</div>
+      <div class="card-body admin-panel-link" style="padding:8px 10px;">
+        <div id="adminReportAlert" style="font-size:11px;color:#c00;margin-bottom:6px;font-weight:bold;display:none;display:flex;align-items:center;"><span class="material-icons" style="font-size:14px;margin-right:4px;">warning</span> <span id="adminReportCount">0</span>&nbsp;Pending Reports</div>
+        <a href="admin.html">Open Admin Panel</a>
+      </div>
+    </div>
+    <div class="sidebar-card">
+      <div class="card-title"><span class="material-icons" style="font-size:13px;">photo_camera</span> Update Picture</div>
+      <div class="card-body sidebar-upload">
+        <input type="file" id="file" accept="image/*">
+        <button onclick="upload(document.getElementById('file').files[0])">Upload</button>
+      </div>
+    </div>
+    <div class="sidebar-card" id="trendingCard" style="display:none;">
+      <div class="card-title"><span class="material-icons" style="font-size:13px;">trending_up</span> Trending</div>
+      <div class="card-body sidebar-links"></div>
+    </div>
+    <div class="sidebar-card">
+      <div class="card-title"><span class="material-icons" style="font-size:13px;">link</span> Quick Links</div>
+      <div class="sidebar-links" style="padding:6px 0;">
+        <a href="profile.html"><span class="material-icons">person</span> My Profile</a>
+        <a href="settings.html"><span class="material-icons">settings</span> Settings</a>
+        <a href="about.html"><span class="material-icons">info</span> About</a>
+        <a href="help.html"><span class="material-icons">help</span> Help / Support</a>
+        <a href="privacy.html"><span class="material-icons">verified_user</span> Privacy Policy</a>
+        <a href="terms.html"><span class="material-icons">gavel</span> Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+<script>
+/* logout handled in app.js */
+
+if (!localStorage.getItem("currentUser")) {
+  location.href = "index.html";
+} else {
+
+  let _searchQ = "", _sortMode = "newest";
+
+  function onModeChange() {
+    const mode = document.getElementById("searchMode").value;
+    const sortEl = document.getElementById("sortSelect");
+    const inp = document.getElementById("searchInput");
+    if (mode === "users") {
+      sortEl.style.display = "none";
+      inp.placeholder = "Search users...";
+    } else {
+      sortEl.style.display = "";
+      inp.placeholder = "Search posts...";
+    }
+    clearSearch();
+  }
+
+  function doSearch() {
+    const mode = document.getElementById("searchMode").value;
+    _searchQ = document.getElementById("searchInput").value.trim();
+    _sortMode = document.getElementById("sortSelect").value;
+    const label = document.getElementById("searchLabel");
+    if (mode === "users") {
+      label.innerText = _searchQ ? 'Searching users for "'+_searchQ+'"' : "";
+      renderUserSearch(_searchQ);
+    } else {
+      _currentPage = 0;
+      if (_searchQ) label.innerText = 'Showing results for "'+_searchQ+'"';
+      else label.innerText = "";
+      render(_searchQ, _sortMode, 0);
+    }
+  }
+
+  function clearSearch() {
+    document.getElementById("searchInput").value = "";
+    document.getElementById("sortSelect").value = "newest";
+    _searchQ = ""; _sortMode = "newest";
+    _currentPage = 0;
+    document.getElementById("searchLabel").innerText = "";
+    const mode = document.getElementById("searchMode").value;
+    if (mode === "users") {
+      document.getElementById("posts").innerHTML = "";
+      document.getElementById("pagination").innerHTML = "";
+    } else {
+      render(null, null, 0);
+    }
+  }
+
+  function goPage(p) {
+    window.scrollTo(0,0);
+    render(_searchQ, _sortMode, p);
+  }
+
+  applyTheme();
+
+  const params = new URLSearchParams(location.search);
+  const initTag = params.get("tag");
+
+  document.addEventListener("sessionReady", () => {
+    if (isAdmin()) {
+      if (localStorage.getItem("hideAdminControls") !== "true") {
+        document.getElementById("adminPanelCard").style.display = "block";
+      }
+      // Fetch report count
+      sb.from("reports").select("*", { count: "exact", head: true }).then(({ count }) => {
+        if (count > 0) {
+          document.getElementById("adminReportAlert").style.display = "block";
+          document.getElementById("adminReportCount").innerText = count;
+        }
+      });
+    }
+    if (initTag) {
+      document.getElementById("searchInput").value = "#" + initTag;
+      doSearch();
+    } else {
+      render(null, null, 0);
+    }
+    const l = document.getElementById("loading");
+    if (l) l.style.display = "none";
+  });
+  
+  // Fallback for already loaded sessions
+  if (currentUser) {
+    document.dispatchEvent(new Event("sessionReady"));
+  } else {
+    // If not logged in and not even a cached currentUser
+    setTimeout(() => {
+       if (!currentUser && !localStorage.getItem("currentUser")) location.href = "index.html";
+    }, 1000);
+  }
+
+}
+</script>
+<script src="dev_tools_loader.js"></script>
+</body>
+</html>
